@@ -1,13 +1,13 @@
 'use-strict'
 
 const funpromise = {}
-funpromise.series = function (iterable, callback, self) {
+funpromise.series = function (iterable, returnPromise) {
   const results = []
 
   return iterable.reduce((sequence, id, index, array) => {
     return sequence.then((res) => {
       results.push(res)
-      return callback.call(self, id, index, array)
+      return returnPromise(id, index, array)
     })
   }, Promise.resolve(true))
   .then(res => new Promise((resolve) => { // don't handle reject there.
